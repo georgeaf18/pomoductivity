@@ -1,0 +1,42 @@
+{
+  "name": "pomoductivity",
+  "version": "2.0.0",
+  "main": "server.js",
+  "description": "Modular REST API for Pomodoro timer management with real-time WebSocket updates. Designed for Angular frontend integration.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "rest-api",
+    "websocket",
+    "express",
+    "nodejs",
+    "angular"
+  ],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}
