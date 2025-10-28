@@ -414,3 +414,23 @@ npm start
 - [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
 - [REST API Best Practices](https://restfulapi.net/)
 - [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
+
+## Notification System
+
+A new notification service has been added to handle sending notifications for timer events using the Pushover API.
+
+### Architecture
+- **Notification Service:** Located in `src/services/notification.service.js`
+  - Sends notifications for timer start, stop, and complete events
+  - Uses native fetch for HTTP requests
+
+### Event Flow
+1. **Timer Event Triggered**
+   - When the timer starts, stops, or completes, the event is caught in the `TimerService`.
+2. **Call Notification Service**
+   - `TimerService` calls the appropriate method on `NotificationService` with event details.
+3. **Send Notification via Pushover**
+   - `NotificationService` formats the message and makes an API call to Pushover.
+
+### Extensibility
+- More event types and notification channels can be added easily by extending the constants and NotificationService methods.

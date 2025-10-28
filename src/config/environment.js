@@ -14,5 +14,7 @@ module.exports = {
     origin: process.env.CORS_ORIGIN || 'http://localhost:4200', // Default Angular dev port
     credentials: true,
     optionsSuccessStatus: 200
-  }
+  },
+  pushoverUserKey: process.env.PUSHOVER_USER_KEY,
+  pushoverApiToken: process.env.PUSHOVER_API_TOKEN,
 };

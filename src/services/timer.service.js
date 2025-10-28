@@ -10,6 +10,8 @@ const {
   TIMER_TICK_INTERVAL
 } = require('../config/constants');
 const settingsService = require('./settings.service');
+const notificationService = require('./notification.service');
+const { NOTIFICATION_EVENT_TYPES } = require('../config/constants');
 
 class TimerService {
   constructor() {
@@ -108,7 +110,7 @@ class TimerService {
   /**
    * Complete the current session
    */
-  completeSession() {
+  async completeSession() {
     const endTime = new Date().toISOString();
     const duration = this.getDuration(this.timerState.sessionType);
 
@@ -134,6 +136,11 @@ class TimerService {
 
     this.stopInterval();
     this.notifyStateChange();
+    await notificationService.sendTimerNotification(
+      NOTIFICATION_EVENT_TYPES.TIMER_COMPLETED,
+      this.timerState.sessionType,
+      this.getDuration(this.timerState.sessionType)/60
+    );
     console.log(`${this.timerState.sessionType} session completed!`);
   }
 
@@ -141,7 +148,7 @@ class TimerService {
    * Start the timer
    * @returns {Object} Updated timer state
    */
-  start() {
+  async start() {
     if (!this.timerState.isRunning) {
       this.timerState.isRunning = true;
       this.timerState.startTime = new Date().toISOString();
@@ -151,6 +158,11 @@ class TimerService {
       }
 
       this.notifyStateChange();
+      await notificationService.sendTimerNotification(
+        NOTIFICATION_EVENT_TYPES.TIMER_STARTED,
+        this.timerState.sessionType,
+        this.getDuration(this.timerState.sessionType)/60
+      );
       console.log('Timer started');
     }
     return this.getState();
@@ -160,12 +172,17 @@ class TimerService {
    * Stop the timer
    * @returns {Object} Updated timer state
    */
-  stop() {
+  async stop() {
     if (this.timerState.isRunning) {
       this.timerState.isRunning = false;
       this.timerState.startTime = null;
       this.stopInterval();
       this.notifyStateChange();
+      await notificationService.sendTimerNotification(
+        NOTIFICATION_EVENT_TYPES.TIMER_STOPPED,
+        this.timerState.sessionType,
+        this.getDuration(this.timerState.sessionType)/60
+      );
       console.log('Timer stopped');
     }
     return this.getState();

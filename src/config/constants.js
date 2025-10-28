@@ -2,6 +2,18 @@
  * Application Constants
  */
 
+export const NOTIFICATION_EVENT_TYPES = {
+  TIMER_STARTED: 'timerStarted',
+  TIMER_STOPPED: 'timerStopped',
+  TIMER_COMPLETED: 'timerCompleted',
+};
+
+export const SESSION_TYPE_NAMES = {
+  focus: 'Focus',
+  short_break: 'Short Break',
+  long_break: 'Long Break',
+};
+
 module.exports = {
   // Timer Durations (in seconds)
   FOCUS_DURATION: 25 * 60, // 25 minutes
