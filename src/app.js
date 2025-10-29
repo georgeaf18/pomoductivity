@@ -44,7 +44,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
-    error: err.message || 'Internal Server Error',
+    error: err.message || 'Internal Server Error ',
     ...(config.nodeEnv === 'development' && { stack: err.stack })
   });
 });
