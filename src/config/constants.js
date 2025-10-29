@@ -14,26 +14,24 @@ export const SESSION_TYPE_NAMES = {
   long_break: 'Long Break',
 };
 
-module.exports = {
-  // Timer Durations (in seconds)
-  FOCUS_DURATION: 25 * 60, // 25 minutes
-  SHORT_BREAK_DURATION: 5 * 60, // 5 minutes
-  LONG_BREAK_DURATION: 15 * 60, // 15 minutes
+// Timer Durations (in seconds)
+export const FOCUS_DURATION = 25 * 60; // 25 minutes
+export const SHORT_BREAK_DURATION = 5 * 60; // 5 minutes
+export const LONG_BREAK_DURATION = 15 * 60; // 15 minutes
 
-  // Session Types
-  SESSION_TYPES: {
-    FOCUS: 'focus',
-    SHORT_BREAK: 'short_break',
-    LONG_BREAK: 'long_break'
-  },
-
-  // Session Status
-  SESSION_STATUS: {
-    COMPLETED: 'completed',
-    CANCELLED: 'cancelled'
-  },
-
-  // Server Configuration
-  DEFAULT_PORT: 3000,
-  TIMER_TICK_INTERVAL: 1000 // 1 second
+// Session Types
+export const SESSION_TYPES = {
+  FOCUS: 'focus',
+  SHORT_BREAK: 'short_break',
+  LONG_BREAK: 'long_break'
 };
+
+// Session Status
+export const SESSION_STATUS = {
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled'
+};
+
+// Server Configuration
+export const DEFAULT_PORT = 3000;
+export const TIMER_TICK_INTERVAL = 1000; // 1 second

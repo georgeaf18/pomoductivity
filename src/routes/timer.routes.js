@@ -3,9 +3,10 @@
  * Defines all timer-related API endpoints
  */
 
-const express = require('express');
+import express from 'express';
+import timerController from '../controllers/timer.controller.js';
+
 const router = express.Router();
-const timerController = require('../controllers/timer.controller');
 
 // Timer status
 router.get('/status', timerController.getStatus.bind(timerController));
@@ -22,4 +23,4 @@ router.post('/set-type', timerController.setSessionType.bind(timerController));
 // History
 router.get('/history', timerController.getHistory.bind(timerController));
 
-module.exports = router;
+export default router;

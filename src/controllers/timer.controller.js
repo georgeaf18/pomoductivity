@@ -3,8 +3,8 @@
  * Handles HTTP requests for timer operations
  */
 
-const timerService = require('../services/timer.service');
-const { SESSION_TYPES } = require('../config/constants');
+import timerService from '../services/timer.service.js';
+import { SESSION_TYPES } from '../config/constants.js';
 
 class TimerController {
   /**
@@ -119,4 +119,4 @@ class TimerController {
   }
 }
 
-module.exports = new TimerController();
+export default new TimerController();

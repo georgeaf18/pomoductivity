@@ -3,12 +3,12 @@
  * Main router that combines all route modules
  */
 
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import timerRoutes from './timer.routes.js';
+import healthRoutes from './health.routes.js';
+import settingsRoutes from './settings.routes.js';
 
-const timerRoutes = require('./timer.routes');
-const healthRoutes = require('./health.routes');
-const settingsRoutes = require('./settings.routes');
+const router = express.Router();
 
 // Mount route modules
 router.use('/timer', timerRoutes);
@@ -42,4 +42,4 @@ router.get('/', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

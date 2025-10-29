@@ -4,14 +4,14 @@
  * session tracking, and history management
  */
 
-const {
+import {
   SESSION_TYPES,
   SESSION_STATUS,
-  TIMER_TICK_INTERVAL
-} = require('../config/constants');
-const settingsService = require('./settings.service');
-const notificationService = require('./notification.service');
-const { NOTIFICATION_EVENT_TYPES } = require('../config/constants');
+  TIMER_TICK_INTERVAL,
+  NOTIFICATION_EVENT_TYPES
+} from '../config/constants.js';
+import settingsService from './settings.service.js';
+import notificationService from './notification.service.js';
 
 class TimerService {
   constructor() {
@@ -257,4 +257,4 @@ class TimerService {
 }
 
 // Export singleton instance
-module.exports = new TimerService();
+export default new TimerService();

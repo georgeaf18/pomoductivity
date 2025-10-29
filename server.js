@@ -3,12 +3,12 @@
  * REST API and WebSocket server for Pomodoro timer management
  */
 
-const http = require('http');
-const { WebSocketServer } = require('ws');
-const app = require('./src/app');
-const config = require('./src/config/environment');
-const timerService = require('./src/services/timer.service');
-const websocketService = require('./src/services/websocket.service');
+import http from 'http';
+import { WebSocketServer } from 'ws';
+import app from './src/app.js';
+import config from './src/config/environment.js';
+import timerService from './src/services/timer.service.js';
+import websocketService from './src/services/websocket.service.js';
 
 // Create HTTP server
 const server = http.createServer(app);

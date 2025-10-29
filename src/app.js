@@ -3,10 +3,10 @@
  * Configures middleware, routes, and error handling
  */
 
-const express = require('express');
-const cors = require('cors');
-const config = require('./config/environment');
-const routes = require('./routes');
+import express from 'express';
+import cors from 'cors';
+import config from './config/environment.js';
+import routes from './routes/index.js';
 
 const app = express();
 
@@ -49,4 +49,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-module.exports = app;
+export default app;

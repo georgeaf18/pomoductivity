@@ -3,7 +3,7 @@
  * Handles HTTP requests for timer settings operations
  */
 
-const settingsService = require('../services/settings.service');
+import settingsService from '../services/settings.service.js';
 
 class SettingsController {
   /**
@@ -71,4 +71,4 @@ class SettingsController {
   }
 }
 
-module.exports = new SettingsController();
+export default new SettingsController();

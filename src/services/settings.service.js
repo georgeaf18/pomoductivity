@@ -3,11 +3,11 @@
  * Manages user-configurable timer settings
  */
 
-const {
+import {
   FOCUS_DURATION,
   SHORT_BREAK_DURATION,
   LONG_BREAK_DURATION
-} = require('../config/constants');
+} from '../config/constants.js';
 
 class SettingsService {
   constructor() {
@@ -136,4 +136,4 @@ class SettingsService {
 }
 
 // Export singleton instance
-module.exports = new SettingsService();
+export default new SettingsService();

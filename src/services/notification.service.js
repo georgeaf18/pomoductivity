@@ -1,6 +1,5 @@
-const fetch = require('node-fetch');
-const { pushoverUserKey, pushoverApiToken } = require('../config/environment');
-const { NOTIFICATION_EVENT_TYPES, SESSION_TYPE_NAMES } = require('../config/constants');
+import { pushoverUserKey, pushoverApiToken } from '../config/environment.js';
+import { NOTIFICATION_EVENT_TYPES, SESSION_TYPE_NAMES } from '../config/constants.js';
 
 class NotificationService {
   async sendTimerNotification(eventType, sessionType, duration) {
@@ -29,4 +28,4 @@ class NotificationService {
   }
 }
 
-module.exports = new NotificationService();
+export default new NotificationService();

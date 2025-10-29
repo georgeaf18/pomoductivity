@@ -3,10 +3,11 @@
  * Defines health check endpoints
  */
 
-const express = require('express');
+import express from 'express';
+import healthController from '../controllers/health.controller.js';
+
 const router = express.Router();
-const healthController = require('../controllers/health.controller');
 
 router.get('/', healthController.check.bind(healthController));
 
-module.exports = router;
+export default router;

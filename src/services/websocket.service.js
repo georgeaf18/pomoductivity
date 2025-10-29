@@ -82,4 +82,4 @@ class WebSocketService {
 }
 
 // Export singleton instance
-module.exports = new WebSocketService();
+export default new WebSocketService();

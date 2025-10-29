@@ -57,8 +57,5 @@
  * @property {number} uptime - Server uptime in seconds
  */
 
-module.exports = {
-  // Export types for runtime validation
-  SESSION_TYPES: ['focus', 'short_break', 'long_break'],
-  SESSION_STATUSES: ['completed', 'cancelled']
-};
+export const SESSION_TYPES = ['focus', 'short_break', 'long_break'];
+export const SESSION_STATUSES = ['completed', 'cancelled'];
