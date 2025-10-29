@@ -1,8 +1,8 @@
 /**
- * Jest Configuration
+ * Jest Configuration (ESM)
  */
 
-module.exports = {
+export default {
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
@@ -12,11 +12,14 @@ module.exports = {
   ],
   testMatch: [
     '**/tests/**/*.test.js',
-    '**/tests/**/*.spec.js'
+    '**/tests/**/*.spec.js',
+    '**/tests/**/*.test.mjs',
+    '**/tests/**/*.spec.mjs'
   ],
   verbose: true,
   testTimeout: 10000,
   clearMocks: true,
   resetMocks: true,
-  restoreMocks: true
+  restoreMocks: true,
+  setupFilesAfterEnv: ['<rootDir>/tests/setup/jest.setup.js']
 };

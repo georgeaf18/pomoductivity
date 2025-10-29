@@ -1,9 +1,19 @@
 /**
- * API Integration Tests
+ * API Integration Tests (ESM)
  */
 
-const request = require('supertest');
-const app = require('../../src/app');
+import { jest } from '@jest/globals';
+import request from 'supertest';
+
+let app;
+
+beforeAll(async () => {
+  jest.resetModules();
+  await jest.unstable_mockModule('../../src/services/notification.service.js', () => ({
+    default: { sendTimerNotification: jest.fn().mockResolvedValue() }
+  }));
+  ({ default: app } = await import('../../src/app.js'));
+});
 
 describe('API Integration Tests', () => {
   describe('Health Endpoint', () => {
@@ -47,10 +57,8 @@ describe('API Integration Tests', () => {
 
     describe('POST /api/timer/stop', () => {
       it('should stop the timer', async () => {
-        // Start first
         await request(app).post('/api/timer/start');
 
-        // Then stop
         const response = await request(app)
           .post('/api/timer/stop')
           .expect(200);
@@ -62,14 +70,12 @@ describe('API Integration Tests', () => {
 
     describe('POST /api/timer/start-stop', () => {
       it('should toggle timer state', async () => {
-        // Toggle to start
         const response1 = await request(app)
           .post('/api/timer/start-stop')
           .expect(200);
 
         expect(response1.body.isRunning).toBe(true);
 
-        // Toggle to stop
         const response2 = await request(app)
           .post('/api/timer/start-stop')
           .expect(200);
@@ -242,12 +248,10 @@ describe('API Integration Tests', () => {
 
     describe('POST /api/settings/reset', () => {
       it('should reset settings to defaults', async () => {
-        // First change settings
         await request(app)
           .put('/api/settings')
           .send({ focusDuration: 2000 });
 
-        // Then reset
         const response = await request(app)
           .post('/api/settings/reset')
           .expect(200);
@@ -294,3 +298,5 @@ describe('API Integration Tests', () => {
     });
   });
 });
+
+

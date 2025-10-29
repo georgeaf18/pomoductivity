@@ -1,35 +1,31 @@
 /**
- * Settings Service Unit Tests
+ * Settings Service Unit Tests (ESM)
  */
-
-// Mock the constants module before requiring the service
-jest.mock('../../../src/config/constants', () => ({
-  FOCUS_DURATION: 1500,
-  SHORT_BREAK_DURATION: 300,
-  LONG_BREAK_DURATION: 900,
-  SESSION_TYPES: {
-    FOCUS: 'focus',
-    SHORT_BREAK: 'short_break',
-    LONG_BREAK: 'long_break'
-  },
-  SESSION_STATUS: {
-    COMPLETED: 'completed',
-    CANCELLED: 'cancelled'
-  },
-  TIMER_TICK_INTERVAL: 1000
-}));
+import { jest } from '@jest/globals';
 
 describe('Settings Service', () => {
-  let SettingsService;
   let settingsService;
 
-  beforeEach(() => {
-    // Clear module cache to get a fresh instance
+  beforeEach(async () => {
     jest.resetModules();
 
-    // Require the service after mocking
-    const SettingsServiceClass = require('../../../src/services/settings.service').constructor;
-    settingsService = new SettingsServiceClass();
+    await jest.unstable_mockModule('../../../src/config/constants.js', () => ({
+      FOCUS_DURATION: 1500,
+      SHORT_BREAK_DURATION: 300,
+      LONG_BREAK_DURATION: 900,
+      SESSION_TYPES: {
+        FOCUS: 'focus',
+        SHORT_BREAK: 'short_break',
+        LONG_BREAK: 'long_break'
+      },
+      SESSION_STATUS: {
+        COMPLETED: 'completed',
+        CANCELLED: 'cancelled'
+      },
+      TIMER_TICK_INTERVAL: 1000
+    }));
+
+    ({ default: settingsService } = await import('../../../src/services/settings.service.js'));
   });
 
   describe('getSettings', () => {
@@ -253,3 +249,5 @@ describe('Settings Service', () => {
     });
   });
 });
+
+

@@ -15,8 +15,8 @@ export const cors = {
   optionsSuccessStatus: 200
 };
 
-export const pushoverUserKey = process.env.PUSHOVER_USER_KEY || "ug7tir4h94bs2yugyf8ct4fmtewapq";
-export const pushoverApiToken = process.env.PUSHOVER_API_TOKEN || "akjh8j5q5rwhcx9tngakiyzptfqr3d";
+export const pushoverUserKey = process.env.PUSHOVER_USER_KEY || "";
+export const pushoverApiToken = process.env.PUSHOVER_API_TOKEN || "";
 
 // Default export for convenience
 export default {

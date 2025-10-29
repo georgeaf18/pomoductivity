@@ -1,51 +1,61 @@
 /**
- * Timer Service Unit Tests
+ * Timer Service Unit Tests (ESM)
  */
-
-// Mock dependencies
-jest.mock('../../../src/config/constants', () => ({
-  SESSION_TYPES: {
-    FOCUS: 'focus',
-    SHORT_BREAK: 'short_break',
-    LONG_BREAK: 'long_break'
-  },
-  SESSION_STATUS: {
-    COMPLETED: 'completed',
-    CANCELLED: 'cancelled'
-  },
-  TIMER_TICK_INTERVAL: 1000
-}));
-
-// Mock settings service
-const mockSettingsService = {
-  getDuration: jest.fn(),
-  onChange: jest.fn()
-};
-
-jest.mock('../../../src/services/settings.service', () => mockSettingsService);
+import { jest } from '@jest/globals';
 
 describe('Timer Service', () => {
-  let TimerService;
   let timerService;
+  let mockSettingsService;
+  let mockNotificationService;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetModules();
     jest.clearAllMocks();
     jest.useFakeTimers();
 
-    // Setup default mock returns
-    mockSettingsService.getDuration.mockImplementation((type) => {
-      switch (type) {
-        case 'focus': return 1500;
-        case 'short_break': return 300;
-        case 'long_break': return 900;
-        default: return 1500;
+    await jest.unstable_mockModule('../../../src/config/constants.js', () => ({
+      SESSION_TYPES: {
+        FOCUS: 'focus',
+        SHORT_BREAK: 'short_break',
+        LONG_BREAK: 'long_break'
+      },
+      SESSION_STATUS: {
+        COMPLETED: 'completed',
+        CANCELLED: 'cancelled'
+      },
+      TIMER_TICK_INTERVAL: 1000,
+      NOTIFICATION_EVENT_TYPES: {
+        TIMER_STARTED: 'timerStarted',
+        TIMER_STOPPED: 'timerStopped',
+        TIMER_COMPLETED: 'timerCompleted'
       }
-    });
+    }));
 
-    // Require the service after mocking
-    const TimerServiceClass = require('../../../src/services/timer.service').constructor;
-    timerService = new TimerServiceClass();
+    mockSettingsService = {
+      getDuration: jest.fn((type) => {
+        switch (type) {
+          case 'focus': return 1500;
+          case 'short_break': return 300;
+          case 'long_break': return 900;
+          default: return 1500;
+        }
+      }),
+      onChange: jest.fn()
+    };
+
+    await jest.unstable_mockModule('../../../src/services/settings.service.js', () => ({
+      default: mockSettingsService
+    }));
+
+    mockNotificationService = {
+      sendTimerNotification: jest.fn().mockResolvedValue()
+    };
+
+    await jest.unstable_mockModule('../../../src/services/notification.service.js', () => ({
+      default: mockNotificationService
+    }));
+
+    ({ default: timerService } = await import('../../../src/services/timer.service.js'));
   });
 
   afterEach(() => {
@@ -98,62 +108,62 @@ describe('Timer Service', () => {
   });
 
   describe('start', () => {
-    it('should start the timer', () => {
-      const state = timerService.start();
+    it('should start the timer', async () => {
+      const state = await timerService.start();
 
       expect(state.isRunning).toBe(true);
       expect(state.startTime).toBeTruthy();
     });
 
-    it('should not start if already running', () => {
-      timerService.start();
+    it('should not start if already running', async () => {
+      await timerService.start();
       const firstStartTime = timerService.getState().startTime;
 
-      timerService.start();
+      await timerService.start();
       const secondStartTime = timerService.getState().startTime;
 
       expect(firstStartTime).toBe(secondStartTime);
     });
 
-    it('should start interval', () => {
-      timerService.start();
+    it('should start interval', async () => {
+      await timerService.start();
       expect(timerService.interval).toBeTruthy();
     });
   });
 
   describe('stop', () => {
-    it('should stop the timer', () => {
-      timerService.start();
-      const state = timerService.stop();
+    it('should stop the timer', async () => {
+      await timerService.start();
+      const state = await timerService.stop();
 
       expect(state.isRunning).toBe(false);
       expect(state.startTime).toBeNull();
     });
 
-    it('should clear interval', () => {
-      timerService.start();
-      timerService.stop();
+    it('should clear interval', async () => {
+      await timerService.start();
+      await timerService.stop();
 
       expect(timerService.interval).toBeNull();
     });
 
-    it('should do nothing if already stopped', () => {
-      const state1 = timerService.stop();
-      const state2 = timerService.stop();
+    it('should do nothing if already stopped', async () => {
+      const state1 = await timerService.stop();
+      const state2 = await timerService.stop();
 
       expect(state1).toEqual(state2);
     });
   });
 
   describe('toggle', () => {
-    it('should start timer when stopped', () => {
-      const state = timerService.toggle();
+    it('should start timer when stopped', async () => {
+      const state = await timerService.toggle();
       expect(state.isRunning).toBe(true);
     });
 
-    it('should stop timer when running', () => {
-      timerService.start();
-      const state = timerService.toggle();
+    it('should stop timer when running', async () => {
+      await timerService.start();
+      const state = await timerService.toggle();
       expect(state.isRunning).toBe(false);
     });
   });
@@ -166,16 +176,16 @@ describe('Timer Service', () => {
       expect(state.timeRemaining).toBe(1500);
     });
 
-    it('should stop timer if running', () => {
-      timerService.start();
+    it('should stop timer if running', async () => {
+      await timerService.start();
       const state = timerService.reset();
 
       expect(state.isRunning).toBe(false);
       expect(state.startTime).toBeNull();
     });
 
-    it('should clear interval', () => {
-      timerService.start();
+    it('should clear interval', async () => {
+      await timerService.start();
       timerService.reset();
 
       expect(timerService.interval).toBeNull();
@@ -202,8 +212,8 @@ describe('Timer Service', () => {
       expect(state).toBeNull();
     });
 
-    it('should stop timer when changing type', () => {
-      timerService.start();
+    it('should stop timer when changing type', async () => {
+      await timerService.start();
       const state = timerService.setSessionType('short_break');
 
       expect(state.isRunning).toBe(false);
@@ -212,8 +222,8 @@ describe('Timer Service', () => {
   });
 
   describe('tick', () => {
-    it('should decrement timeRemaining when running', () => {
-      timerService.start();
+    it('should decrement timeRemaining when running', async () => {
+      await timerService.start();
       const initialTime = timerService.getState().timeRemaining;
 
       timerService.tick();
@@ -229,9 +239,9 @@ describe('Timer Service', () => {
       expect(timerService.getState().timeRemaining).toBe(initialTime);
     });
 
-    it('should call completeSession when timeRemaining reaches 0', () => {
+    it('should call completeSession when timeRemaining reaches 0', async () => {
       const completeSpy = jest.spyOn(timerService, 'completeSession');
-      timerService.start();
+      await timerService.start();
       timerService.timerState.timeRemaining = 1;
 
       timerService.tick();
@@ -241,9 +251,9 @@ describe('Timer Service', () => {
   });
 
   describe('completeSession', () => {
-    it('should add entry to history', () => {
-      timerService.start();
-      timerService.completeSession();
+    it('should add entry to history', async () => {
+      await timerService.start();
+      await timerService.completeSession();
 
       const history = timerService.getHistory();
       expect(history).toHaveLength(1);
@@ -254,43 +264,43 @@ describe('Timer Service', () => {
       });
     });
 
-    it('should increment sessionCount for focus sessions', () => {
-      timerService.start();
-      timerService.completeSession();
+    it('should increment sessionCount for focus sessions', async () => {
+      await timerService.start();
+      await timerService.completeSession();
 
       expect(timerService.getState().sessionCount).toBe(1);
     });
 
-    it('should not increment sessionCount for break sessions', () => {
+    it('should not increment sessionCount for break sessions', async () => {
       timerService.setSessionType('short_break');
-      timerService.start();
-      timerService.completeSession();
+      await timerService.start();
+      await timerService.completeSession();
 
       expect(timerService.getState().sessionCount).toBe(0);
     });
 
-    it('should stop timer', () => {
-      timerService.start();
-      timerService.completeSession();
+    it('should stop timer', async () => {
+      await timerService.start();
+      await timerService.completeSession();
 
       expect(timerService.getState().isRunning).toBe(false);
     });
 
-    it('should reset timeRemaining to session duration', () => {
-      timerService.start();
+    it('should reset timeRemaining to session duration', async () => {
+      await timerService.start();
       timerService.timerState.timeRemaining = 0;
-      timerService.completeSession();
+      await timerService.completeSession();
 
       expect(timerService.getState().timeRemaining).toBe(1500);
     });
   });
 
   describe('onStateChange', () => {
-    it('should call registered callbacks on state change', () => {
+    it('should call registered callbacks on state change', async () => {
       const callback = jest.fn();
       timerService.onStateChange(callback);
 
-      timerService.start();
+      await timerService.start();
 
       expect(callback).toHaveBeenCalled();
       expect(callback).toHaveBeenCalledWith(expect.objectContaining({
@@ -298,14 +308,14 @@ describe('Timer Service', () => {
       }));
     });
 
-    it('should support multiple callbacks', () => {
+    it('should support multiple callbacks', async () => {
       const callback1 = jest.fn();
       const callback2 = jest.fn();
 
       timerService.onStateChange(callback1);
       timerService.onStateChange(callback2);
 
-      timerService.start();
+      await timerService.start();
 
       expect(callback1).toHaveBeenCalled();
       expect(callback2).toHaveBeenCalled();
@@ -326,8 +336,8 @@ describe('Timer Service', () => {
   });
 
   describe('destroy', () => {
-    it('should clear interval', () => {
-      timerService.start();
+    it('should clear interval', async () => {
+      await timerService.start();
       timerService.destroy();
 
       expect(timerService.interval).toBeNull();
@@ -341,3 +351,5 @@ describe('Timer Service', () => {
     });
   });
 });
+
+

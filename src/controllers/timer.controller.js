@@ -25,9 +25,9 @@ class TimerController {
    * Toggle timer (start/stop)
    * POST /api/timer/start-stop
    */
-  toggleTimer(req, res) {
+  async toggleTimer(req, res) {
     try {
-      const state = timerService.toggle();
+      const state = await timerService.toggle();
       res.json(state);
     } catch (error) {
       console.error('Error toggling timer:', error);
@@ -39,9 +39,9 @@ class TimerController {
    * Start timer
    * POST /api/timer/start
    */
-  startTimer(req, res) {
+  async startTimer(req, res) {
     try {
-      const state = timerService.start();
+      const state = await timerService.start();
       res.json(state);
     } catch (error) {
       console.error('Error starting timer:', error);
@@ -53,9 +53,9 @@ class TimerController {
    * Stop timer
    * POST /api/timer/stop
    */
-  stopTimer(req, res) {
+  async stopTimer(req, res) {
     try {
-      const state = timerService.stop();
+      const state = await timerService.stop();
       res.json(state);
     } catch (error) {
       console.error('Error stopping timer:', error);
