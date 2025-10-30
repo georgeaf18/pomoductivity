@@ -9,7 +9,8 @@
     "dev": "node --watch server.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "prepare": "husky"
   },
   "keywords": [
     "pomodoro",
@@ -37,7 +38,15 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
+    "husky": "^9.1.7",
     "jest": "^30.2.0",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.6.2",
     "supertest": "^7.1.4"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write"
+    ]
   }
 }
