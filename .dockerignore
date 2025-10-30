@@ -13,7 +13,6 @@ coverage/
 # Documentation
 docs/
 *.md
-!package*.json
 
 # Git
 .git/
