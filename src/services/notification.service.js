@@ -3,7 +3,12 @@ import { NOTIFICATION_EVENT_TYPES, SESSION_TYPE_NAMES } from '../config/constant
 
 class NotificationService {
   async sendTimerNotification(eventType, sessionType, duration) {
-    const message = this.formatMessage(eventType, sessionType, duration, new Date().toLocaleTimeString());
+    const message = this.formatMessage(
+      eventType,
+      sessionType,
+      duration,
+      new Date().toLocaleTimeString()
+    );
     await this.sendPushoverNotification(message, `Timer Event: ${SESSION_TYPE_NAMES[sessionType]}`);
   }
 

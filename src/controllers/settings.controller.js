@@ -45,7 +45,8 @@ class SettingsController {
 
       if (!settings) {
         return res.status(400).json({
-          error: 'Invalid duration value. Duration must be a positive integer between 1 and 7200 seconds'
+          error:
+            'Invalid duration value. Duration must be a positive integer between 1 and 7200 seconds'
         });
       }
 

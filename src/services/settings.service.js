@@ -3,11 +3,7 @@
  * Manages user-configurable timer settings
  */
 
-import {
-  FOCUS_DURATION,
-  SHORT_BREAK_DURATION,
-  LONG_BREAK_DURATION
-} from '../config/constants.js';
+import { FOCUS_DURATION, SHORT_BREAK_DURATION, LONG_BREAK_DURATION } from '../config/constants.js';
 
 class SettingsService {
   constructor() {

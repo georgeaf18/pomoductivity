@@ -17,7 +17,7 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 // Setup WebSocket connection handler
-wss.on('connection', (ws) => {
+wss.on('connection', ws => {
   console.log('New WebSocket client connected');
 
   // Send current state to newly connected client
@@ -28,7 +28,7 @@ wss.on('connection', (ws) => {
     console.log('WebSocket client disconnected');
   });
 
-  ws.on('error', (error) => {
+  ws.on('error', error => {
     console.error('WebSocket error:', error);
   });
 });
@@ -37,7 +37,7 @@ wss.on('connection', (ws) => {
 websocketService.initialize(wss);
 
 // Register timer state change callback to broadcast updates
-timerService.onStateChange((state) => {
+timerService.onStateChange(state => {
   websocketService.broadcast(state);
 });
 

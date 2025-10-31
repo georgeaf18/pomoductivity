@@ -27,7 +27,7 @@ class TimerService {
     this.stateChangeCallbacks = [];
 
     // Listen for settings changes
-    settingsService.onChange((settings) => {
+    settingsService.onChange(settings => {
       this.handleSettingsChange(settings);
     });
   }
@@ -139,7 +139,7 @@ class TimerService {
     await notificationService.sendTimerNotification(
       NOTIFICATION_EVENT_TYPES.TIMER_COMPLETED,
       this.timerState.sessionType,
-      this.getDuration(this.timerState.sessionType)/60
+      this.getDuration(this.timerState.sessionType) / 60
     );
     console.log(`${this.timerState.sessionType} session completed!`);
   }
@@ -161,7 +161,7 @@ class TimerService {
       await notificationService.sendTimerNotification(
         NOTIFICATION_EVENT_TYPES.TIMER_STARTED,
         this.timerState.sessionType,
-        this.getDuration(this.timerState.sessionType)/60
+        this.getDuration(this.timerState.sessionType) / 60
       );
       console.log('Timer started');
     }
@@ -181,7 +181,7 @@ class TimerService {
       await notificationService.sendTimerNotification(
         NOTIFICATION_EVENT_TYPES.TIMER_STOPPED,
         this.timerState.sessionType,
-        this.getDuration(this.timerState.sessionType)/60
+        this.getDuration(this.timerState.sessionType) / 60
       );
       console.log('Timer stopped');
     }

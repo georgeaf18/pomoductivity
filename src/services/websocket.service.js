@@ -15,14 +15,14 @@ class WebSocketService {
   initialize(wss) {
     this.wss = wss;
 
-    this.wss.on('connection', (ws) => {
+    this.wss.on('connection', ws => {
       console.log('New WebSocket client connected');
 
       ws.on('close', () => {
         console.log('WebSocket client disconnected');
       });
 
-      ws.on('error', (error) => {
+      ws.on('error', error => {
         console.error('WebSocket error:', error);
       });
     });
@@ -34,7 +34,8 @@ class WebSocketService {
    * @param {Object} state - Initial state to send
    */
   sendInitialState(ws, state) {
-    if (ws.readyState === 1) { // 1 = OPEN
+    if (ws.readyState === 1) {
+      // 1 = OPEN
       ws.send(JSON.stringify(state));
     }
   }
@@ -51,7 +52,8 @@ class WebSocketService {
 
     const message = JSON.stringify(state);
     this.wss.clients.forEach(client => {
-      if (client.readyState === 1) { // 1 = OPEN
+      if (client.readyState === 1) {
+        // 1 = OPEN
         client.send(message);
       }
     });
@@ -63,7 +65,7 @@ class WebSocketService {
    * @returns {Function} Connection handler
    */
   getConnectionHandler(getStateFunc) {
-    return (ws) => {
+    return ws => {
       console.log('New WebSocket client connected');
 
       // Send current state to newly connected client
@@ -74,7 +76,7 @@ class WebSocketService {
         console.log('WebSocket client disconnected');
       });
 
-      ws.on('error', (error) => {
+      ws.on('error', error => {
         console.error('WebSocket error:', error);
       });
     };

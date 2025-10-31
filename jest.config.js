@@ -8,8 +8,18 @@ export default {
   collectCoverageFrom: [
     'src/**/*.js',
     '!src/**/*.test.js',
-    '!src/**/*.spec.js'
+    '!src/**/*.spec.js',
+    // Exempt services that require external dependencies
+    '!src/services/notification.service.js',
+    '!src/services/websocket.service.js',
+    // Exempt models (simple data structures)
+    '!src/models/*.js'
   ],
+  coverageThreshold: {
+    global: {
+      statements: 65
+    }
+  },
   testMatch: [
     '**/tests/**/*.test.js',
     '**/tests/**/*.spec.js',

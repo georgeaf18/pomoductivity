@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -37,14 +40,15 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=sha,prefix={{branch}}-
+            type=ref,event=branch
+            type=sha,prefix=main-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push API image
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -53,6 +57,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: self-hosted
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Log in to GHCR
